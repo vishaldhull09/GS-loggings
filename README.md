@@ -1,30 +1,41 @@
 # GS-Quantify-2019
-The problem is identified as a text clustering task.
-Dataset contains logs occurring with a certain pattern, leading to the formation of clusters
+Context
 
-### Data cleaning steps - 
-Lower casing, Punctuation removal, Stopwords removal, Rare words removal, Tokenization, Lemmatization. NLTK & TextBlob functions were used for cleaning.
+Logs are an integral part of Goldman Sachs' day-to-day operations. We depend upon logs to monitor the behavior of thousands of applications which process millions of trades, help us manage risk, support algorithmic trading and so on. In all, these applications generate hundreds of millions of log lines every day which engineers comb through to identify and rectify application failures.
 
-### Text Transformation - 
-Experimented following transformation methods
-1. TF-IDF Vectorization - [here](https://github.com/pranavpawar3/GS-Quantify-2019/blob/master/Final_Code_pretrained.ipynb)
-2. Word2Vec Transformation (Pretrained) - [here](https://github.com/pranavpawar3/GS-Quantify-2019/blob/master/Final_Code_transfer_pretrained.ipynb)
-3. Word2Vec Using Transfer Learning Final - [here](https://github.com/pranavpawar3/GS-Quantify-2019/blob/master/Final_Code_transfer_learning.ipynb)
+However, different applications built by different engineers tend to communicate the same kinds of failures in different ways. This makes the process of identifying similar failures across different applications difficult and tedious.
 
-#### To download the Google News pretrained embeddings - [click here](https://drive.google.com/file/d/0B7XkCwpI5KDYNlNUTTlSS21pQmM/edit)
+To that end, the log analytics team at Goldman Sachs is developing tools that would identify common kinds of failures. This would enable the engineers to easily spot failures and assess who is best equipped to respond to such failures.
 
-### Models used - 
+The problem that you must solve is just this - given a set of log lines, assign each to a cluster. The overall goal of this problem is to identify the intent of each log line and group log lines with the same intent in the same cluster.
+
+Your submission will be evaluated on the number and quality of your clusters, as well as the techniques that you use to form the clusters.
+Some Examples of Correct Clustering
+Example 1
+
+The following lines are all part of the same cluster that queries an API for a list of servers:
+
+gs-quantify-api 2019-30-06 13:00:10 Received 30 server IDs from API
+gs-quantify-log 2019-31-07 09:30:55 Received 1550 server UIDs from API
+gs-quantify-api 2019-08-31 13:30 Received 80 server UMMIDs from API
+
+Example 2
+
+The following belong to a cluster that processes datasets:
+
+gs-quantify-data 2019-25-08 07:53:32 Loaded dataset DatasetName from DB2
+gs-quantify-data 2019-25-08 09:53:32 Processed dataset DatasetName
+gs-quantify-data 2019-25-08 10:03:32 Saved dataset DatasetName to DB2
+
+Example 3
+
+The following belong to a cluster that queries a particular REST API:
+
+gs-quantify-api 2019-12-07 11:30:09.001001 Downloaded 81 records using "GET /magic_api/dataset_x.csv"
+gs-quantify-api 2019-12-07 11:30:09.001001 Saved 755 records using "POST /magic_api/dataset_y"
+
+
+### Models and techniques used - 
+Word2vec text transformation
 1. K-Means
-2. DBSCAN (Highest performing). Because of competition rules, no. of clusters can vary only between [5,20], and as DBSCAN was choosing more than 20 clusters as optimal, it was dropped from final model. 
-3. Gaussian Mixture Models
-
-### Dependencies - 
-1. Pandas - 0.25.2
-2. Numpy - 1.17.3
-3. Matplotlib - 3.1.1
-4. Sklearn - 0.21.3
-5. NLTK - 3.4.5
-6. Gensim - 3.8.1
-7. logging
-
-### Final Rank - 1st (Onsite finals at GS Office)
+2. DBSCAN 
